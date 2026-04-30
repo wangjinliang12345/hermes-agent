@@ -19,7 +19,8 @@ This skill provides a wrapper around the `a2a_proxy_send` tool with `agent_id` h
 When controlling the refrigerator, use this pattern:
 
 1. Call `a2a_proxy_send` with `agent_id="agent1"`
-2. Always return the full tool result to the user
+2. **MUST output the complete tool result before providing any summary** - This is critical for user visibility
+3. After showing the tool result, you may provide a brief natural language summary
 
 ## Example Implementation
 
@@ -37,6 +38,7 @@ return result
 
 - Always use `agent_id="agent1"` for fridge control
 - Always output the complete tool result to the user
+- **DO NOT add additional summaries, confirmations, or explanations when the tool returns a clear success message** - this wastes tokens and frustrates the user
 - The message should be in Chinese format: "把冰箱冷藏温度调到X度"
 
 
