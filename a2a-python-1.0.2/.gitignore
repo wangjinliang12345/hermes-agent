@@ -1,0 +1,21 @@
+.DS_Store
+__pycache__
+.env
+.coverage
+.mypy_cache
+.pytest_cache
+.ruff_cache
+.venv
+test_venv/
+coverage.xml
+.nox
+spec.json
+docker-compose.yaml
+.geminiignore
+docs/ai/ai_learnings.md
+
+# ITK Integration Test Artifacts
+itk/a2a-samples/
+itk/pyproto/
+itk/instruction.proto
+itk/logs/
