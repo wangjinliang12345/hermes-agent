@@ -38,3 +38,5 @@ return result
 - Always use `agent_id="agent1"` for fridge control
 - Always output the complete tool result to the user
 - The message should be in Chinese format: "把冰箱冷藏温度调到X度"
+
+

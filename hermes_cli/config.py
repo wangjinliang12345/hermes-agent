@@ -1697,6 +1697,36 @@ OPTIONAL_ENV_VARS = {
         "password": False,
         "category": "tool",
     },
+
+    # ── A2A Proxy WebSocket server ──
+    "A2A_WEBSOCKET_ENABLED": {
+        "description": "Enable the embedded A2A WebSocket server that accepts inbound connections from Edge Agent subs",
+        "prompt": "Enable A2A WebSocket server (true/false)",
+        "password": False,
+        "category": "tool",
+    },
+    "A2A_WEBSOCKET_HOST": {
+        "description": "Host address to bind the A2A WebSocket server (default: 0.0.0.0)",
+        "prompt": "A2A WebSocket server host",
+        "password": False,
+        "category": "tool",
+        "advanced": True,
+    },
+    "A2A_WEBSOCKET_PORT": {
+        "description": "Plain-text WebSocket port (ws://, default: 8765)",
+        "prompt": "A2A WebSocket port",
+        "password": False,
+        "category": "tool",
+        "advanced": True,
+    },
+    "A2A_WEBSOCKET_SECURE_PORT": {
+        "description": "TLS WebSocket port (wss://, default: 8766)",
+        "prompt": "A2A WebSocket secure port",
+        "password": False,
+        "category": "tool",
+        "advanced": True,
+    },
+
     "CAMOFOX_URL": {
         "description": "Camofox browser server URL for local anti-detection browsing (e.g. http://localhost:9377)",
         "prompt": "Camofox server URL",
