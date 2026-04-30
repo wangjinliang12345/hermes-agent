@@ -11,6 +11,7 @@ from pathlib import Path
 from tools.registry import registry, tool_result
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 # Read A2A WebSocket configuration from environment variables.
 # These are managed via ~/.hermes/.env and loaded into the process env.
