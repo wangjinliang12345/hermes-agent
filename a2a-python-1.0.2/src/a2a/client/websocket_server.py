@@ -91,17 +91,29 @@ class A2AWebSocketServer:
                     continue
 
                 request_id = data.get('request_id')
+                logger.info(
+                    'WS recv: request_id=%s method=%s',
+                    request_id, data.get('method'),
+                )
                 if (
                     request_id
                     and request_id in self._pending_responses
                 ):
                     future = self._pending_responses.pop(request_id)
                     if not future.done():
+                        logger.info(
+                            'WS response: request_id=%s payload=%s',
+                            request_id, data.get('payload'),
+                        )
                         future.set_result(data)
                 elif (
                     request_id
                     and request_id in self._pending_streams
                 ):
+                    logger.info(
+                        'WS stream chunk: request_id=%s payload=%s',
+                        request_id, data.get('payload'),
+                    )
                     self._pending_streams[request_id].put_nowait(data)
         except websockets.exceptions.ConnectionClosed:
             logger.info('Connection closed for agent_id=%s', agent_id)
@@ -162,9 +174,17 @@ class A2AWebSocketServer:
         })
 
         try:
+            logger.info(
+                'WS send: agent_id=%s request_id=%s method=%s payload=%s',
+                agent_id, request_id, method, payload,
+            )
             await self._connections[agent_id].send(message)
             response_data = await asyncio.wait_for(
                 future, timeout=30.0
+            )
+            logger.info(
+                'WS received: agent_id=%s request_id=%s response=%s',
+                agent_id, request_id, response_data.get('payload', response_data),
             )
             return response_data.get('payload', response_data)
         finally:
@@ -204,6 +224,10 @@ class A2AWebSocketServer:
             'payload': payload,
         })
 
+        logger.info(
+            'WS stream send: agent_id=%s request_id=%s method=%s payload=%s',
+            agent_id, request_id, method, payload,
+        )
         await self._connections[agent_id].send(message)
 
         try:
@@ -219,6 +243,10 @@ class A2AWebSocketServer:
                     )
                     break
 
+                logger.info(
+                    'WS stream received: agent_id=%s request_id=%s chunk=%s',
+                    agent_id, request_id, data.get('payload', data),
+                )
                 yield data.get('payload', data)
                 if data.get('stream_done'):
                     break
