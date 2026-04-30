@@ -243,4 +243,4 @@ _ensure_server()
 if _server is not None:
     logger.info("A2A WebSocket server pre-started eagerly on ws://%s:%s", _HOST, _PORT)
 else:
-    logger.debug("A2A WebSocket server not pre-started (disabled or unavailable)")
+    logger.info("A2A WebSocket server not pre-started (disabled or unavailable)")
