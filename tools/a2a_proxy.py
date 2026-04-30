@@ -126,7 +126,9 @@ def _a2a_proxy_send_sync(
             "fallback stub — agent_id=%s, message=%s",
             agent_id, message,
         )
-        return tool_result(success=True, message="设置成功")
+        result = tool_result(success=True, message="设置成功")
+        logger.info("a2a_proxy_send result: %s", result)
+        return result
 
     logger.debug("will send to websocket client")
     # Resolve agent_id. If the provided id is not connected, fall back to
@@ -142,13 +144,15 @@ def _a2a_proxy_send_sync(
             )
             agent_id = fallback
         else:
-            return tool_result(
+            result = tool_result(
                 success=False,
                 message=(
                     f"No WebSocket sub connected for agent_id={agent_id}. "
                     "Please ensure the Edge Agent sub is online."
                 ),
             )
+            logger.info("a2a_proxy_send result: %s", result)
+            return result
 
     # Build the protobuf payload as a dict.
     request = _SendMessageRequest()
@@ -166,7 +170,9 @@ def _a2a_proxy_send_sync(
     except Exception as e:
         err_msg = str(e) if str(e) else type(e).__name__
         logger.exception("A2A send_request failed: %s", err_msg)
-        return tool_result(success=False, message=f"A2A request failed: {err_msg}")
+        result = tool_result(success=False, message=f"A2A request failed: {err_msg}")
+        logger.info("a2a_proxy_send result: %s", result)
+        return result
 
     # Extract the agent's reply from the response payload.
     task = response_data.get("task", {})
@@ -175,10 +181,12 @@ def _a2a_proxy_send_sync(
     parts = msg.get("parts", [])
     reply_text = parts[0].get("text", "") if parts else ""
 
-    return tool_result(
+    result = tool_result(
         success=status.get("state") == "TASK_STATE_COMPLETED",
         message=reply_text or json.dumps(response_data, ensure_ascii=False),
     )
+    logger.info("a2a_proxy_send result: %s", result)
+    return result
 
 
 _A2A_PROXY_SCHEMA = {
