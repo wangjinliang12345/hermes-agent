@@ -123,6 +123,8 @@ class A2AWebSocketServer:
 
     async def start(self) -> None:
         """Starts the WebSocket server."""
+        logging.getLogger("websockets.server").setLevel(logging.CRITICAL)
+
         self._server = await websockets.serve(
             self._handler, self.host, self.port
         )
