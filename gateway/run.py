@@ -12090,6 +12090,13 @@ async def start_gateway(config: Optional[GatewayConfig] = None, replace: bool = 
     except Exception as e:
         logger.debug("MCP tool discovery failed: %s", e)
 
+    # Eager-import a2a_proxy so its background WebSocket server starts
+    # at gateway startup, matching the CLI behaviour.
+    try:
+        import tools.a2a_proxy  # noqa: F401
+    except Exception:
+        pass
+
     # Start the gateway
     success = await runner.start()
     if not success:
