@@ -182,7 +182,7 @@ class A2AWebSocketServer:
             )
             await self._connections[agent_id].send(message)
             response_data = await asyncio.wait_for(
-                future, timeout=30.0
+                future, timeout=60.0
             )
             logger.info(
                 'WS received: agent_id=%s request_id=%s response=%s',
