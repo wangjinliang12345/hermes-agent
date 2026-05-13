@@ -138,7 +138,7 @@ def _a2a_proxy_send_sync(
     if agent_id not in connected_ids:
         result = tool_result(
             success=False,
-            message="找不到agent_id,设备没连接",
+            message=f"找不到agent_id: {agent_id}, 设备没连接",
         )
         logger.info("a2a_proxy_send result: %s", result)
         return result
