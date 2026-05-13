@@ -136,24 +136,12 @@ def _a2a_proxy_send_sync(
     # the first available connection.
     connected_ids = list(_server._connections.keys())
     if agent_id not in connected_ids:
-        if connected_ids:
-            fallback = connected_ids[0]
-            logger.warning(
-                "agent_id %s not connected; falling back to %s",
-                agent_id,
-                fallback,
-            )
-            agent_id = fallback
-        else:
-            result = tool_result(
-                success=False,
-                message=(
-                    f"No WebSocket sub connected for agent_id={agent_id}. "
-                    "Please ensure the Edge Agent sub is online."
-                ),
-            )
-            logger.info("a2a_proxy_send result: %s", result)
-            return result
+        result = tool_result(
+            success=False,
+            message="找不到agent_id,设备没连接",
+        )
+        logger.info("a2a_proxy_send result: %s", result)
+        return result
 
     # Build the protobuf payload as a dict.
     request = _SendMessageRequest()
